@@ -2,9 +2,10 @@ import bookService from "../service/book-service.js";
 
 const getBooksHandler = (request, h) => {
   try {
-    const result = bookService.getBooks();
+    const result = bookService.getBooks(request.query);
     return h.response({ status: "success", data: result }).code(200);
   } catch (e) {
+    console.log(e);
     return h.response({ status: e.status, message: e.message }).code(e.code);
   }
 };

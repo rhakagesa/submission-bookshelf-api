@@ -7,8 +7,36 @@ import {
   updateBookValidation,
 } from "../validation/book-validation.js";
 
-const getBooks = () => {
-  return { books: books };
+const getBooks = (query) => {
+  const { name, reading, finished } = query;
+
+  if (name !== undefined) {
+    const filterBook = books.filter((book) =>
+      book.name.toLowerCase().includes(name.toLowerCase())
+    );
+
+    if (filterBook.length === 0) {
+      throw new ResponseError("fail", 404, "Buku tidak ditemukan");
+    }
+
+    return { books: filterBook };
+  }
+
+  if (Number(reading) === 1) {
+    const filterBook = books.filter((book) => book.reading === true);
+    return { books: filterBook };
+  } else if (Number(reading) === 0) {
+    const filterBook = books.filter((book) => book.reading === false);
+    return { books: filterBook };
+  } else if (Number(finished) === 1) {
+    const filterBook = books.filter((book) => book.finished === true);
+    return { books: filterBook };
+  } else if (Number(finished) === 0) {
+    const filterBook = books.filter((book) => book.finished === false);
+    return { books: filterBook };
+  } else {
+    return { books: books };
+  }
 };
 
 const getBookById = (id) => {
