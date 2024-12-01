@@ -10,6 +10,11 @@ import {
 const getBooks = (query) => {
   const { name, reading, finished } = query;
 
+  const selectedKey = (filterBook) =>
+    filterBook.map(({ id, name, publisher }) => {
+      return { id, name, publisher };
+    });
+
   if (name !== undefined) {
     const filterBook = books.filter((book) =>
       book.name.toLowerCase().includes(name.toLowerCase())
@@ -19,23 +24,23 @@ const getBooks = (query) => {
       throw new ResponseError("fail", 404, "Buku tidak ditemukan");
     }
 
-    return { books: filterBook };
+    return { books: selectedKey(filterBook) };
   }
 
   if (Number(reading) === 1) {
     const filterBook = books.filter((book) => book.reading === true);
-    return { books: filterBook };
+    return { books: selectedKey(filterBook) };
   } else if (Number(reading) === 0) {
     const filterBook = books.filter((book) => book.reading === false);
-    return { books: filterBook };
+    return { books: selectedKey(filterBook) };
   } else if (Number(finished) === 1) {
     const filterBook = books.filter((book) => book.finished === true);
-    return { books: filterBook };
+    return { books: selectedKey(filterBook) };
   } else if (Number(finished) === 0) {
     const filterBook = books.filter((book) => book.finished === false);
-    return { books: filterBook };
+    return { books: selectedKey(filterBook) };
   } else {
-    return { books: books };
+    return { books: selectedKey(books) };
   }
 };
 
